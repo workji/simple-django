@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  django:
+    container_name: django
+    build: ./docker/django
+    command: tail -f /dev/null
+    volumes:
+      - ./www:/root/django
+      - ./www/static:/root/static
+    ports:
+      - "8001:8001"
+      - "20022:22"
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+    volumes:
+      - "./www/static:/opt/apps/static/"
